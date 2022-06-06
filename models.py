@@ -8,6 +8,7 @@ class Player:
         self.name = name
         self.lives = LIVES
         self.score = 0
+        self.allowed_attacks = HEROES 
 
     @staticmethod
     def fight(attack, defense):
@@ -22,11 +23,11 @@ class Player:
 
     def attack(self, enemy_obj):
         chosen_attack = input('select an attacker: ')
-        while chosen_attack not in HEROES:
-            for num, name in HEROES.items():
+        while chosen_attack not in self.allowed_attacks:
+            for num, name in self.allowed_attacks.items():
                 print(num, name)
             chosen_attack = input('select an attacker: ')
-        chosen_attack = HEROES[chosen_attack]
+        chosen_attack = self.allowed_attacks[chosen_attack]
         result_fight = self.fight(chosen_attack, enemy_obj.select_attack())
         if result_fight == 1:
             print('You attacked successfully!')
@@ -39,11 +40,11 @@ class Player:
 
     def defence(self, enemy_obj):
         chosen_protection = input('choose protection: ')
-        while chosen_protection not in HEROES:
-            for num, name in HEROES.items():
+        while chosen_protection not in self.allowed_attacks:
+            for num, name in self.allowed_attacks.items():
                 print(num, name)
             chosen_protection = input('choose protection: ')
-        chosen_protection = HEROES[chosen_protection]
+        chosen_protection = self.allowed_attacks[chosen_protection]
         result_fight = self.fight(enemy_obj.select_attack(), chosen_protection)
         if result_fight == 1:
             print('Enemy hit')
@@ -65,6 +66,6 @@ class Enemy:
 
     def decrease_lives(self):
         self.lives -= 1
-        print(f'Enemy lives = {self.lives}')
         if self.lives < 1:
             raise EnemyDown()
+        print(f'Enemy lives = {self.lives}')
