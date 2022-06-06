@@ -1,12 +1,6 @@
 from models import *
 
 
-def get_scores(player_obj):
-    with open('scores.txt', 'a') as score:
-        score.write(
-            f'Player - {player_obj.name}, scored: {player_obj.score} points\n')
-
-
 def get_player_instance():
     user_name = input('Enter your name: ')
     while not user_name:
@@ -37,10 +31,10 @@ def play():
         except EnemyDown:
             player.score += 5
             enemy = get_enemy_instance(enemy.level + 1)
-
         except GameOver:
-            get_scores(player)
-            raise KeyboardInterrupt
+            GameOver.get_scores(player.name, player.score)
+            raise GameOver
+
 
 
 if __name__ == '__main__':
@@ -48,5 +42,7 @@ if __name__ == '__main__':
         play()
     except KeyboardInterrupt:
         pass
+    except GameOver:
+        print('Error')
     finally:
         print('Good Bye')
